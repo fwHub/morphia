@@ -219,8 +219,19 @@ public class UpdateOpsImpl<T> implements UpdateOperations<T> {
         if (value == null) {
             throw new QueryException("Value cannot be null.");
         }
-
-        add(UpdateOperator.SET, field, value, true);
+        boolean unset = false;
+        if (mapper.getOptions().isUnsetEmpties()) {
+            if (value instanceof Iterable && !((Iterable) value).iterator().hasNext()) {
+                unset = true;
+            } else if (value instanceof Map && ((Map) value).isEmpty()) {
+                unset = true;
+            }
+        }
+        if (unset) {
+            unset(field);
+        } else {
+            add(UpdateOperator.SET, field, value, true);
+        }
         return this;
     }
 
