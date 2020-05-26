@@ -39,7 +39,7 @@ configure(subprojects.findAll { it.name != 'util' }) {
     apply plugin: 'jacoco'
     apply plugin: 'optional-base'
 
-    group = 'org.mongodb.morphia'
+    group = 'com.github.fwHub'
     sourceCompatibility = JavaVersion.VERSION_1_6
     targetCompatibility = JavaVersion.VERSION_1_6
 
