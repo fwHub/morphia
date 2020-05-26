@@ -705,7 +705,15 @@ public class DatastoreImpl implements AdvancedDatastore {
 
         if (wr == null) {
             final Query<T> query = (Query<T>) createQuery(unwrapped.getClass()).filter(Mapper.ID_KEY, id);
-            wr = update(query, new BasicDBObject("$set", dbObj), false, false, wc).getWriteResult();
+
+            BasicDBObject unsetObj = new BasicDBObject();
+            handleUnsetValues(dbObj, unsetObj);
+
+            DBObject updateObj = new BasicDBObject("$set", dbObj);
+            if (!unsetObj.isEmpty()) {
+                updateObj.put("$unset", unsetObj);
+            }
+            wr = update(query, updateObj, false, false, wc).getWriteResult();
         }
 
         final UpdateResults res = new UpdateResults(wr);
@@ -1280,6 +1288,7 @@ public class DatastoreImpl implements AdvancedDatastore {
         // involvedObjects is used not only as a cache but also as a list of what needs to be called for life-cycle methods at the end.
         final LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
         final DBObject document = entityToDBObj(entity, involvedObjects);
+        handleUnsetValues(document, new BasicDBObject());
 
         // try to do an update if there is a @Version field
         final Object idValue = document.get(Mapper.ID_KEY);
@@ -1541,6 +1550,37 @@ public class DatastoreImpl implements AdvancedDatastore {
         return new UpdateResults(dbColl.update(queryObject, update,
                                                enforceWriteConcern(options, query.getEntityClass())
                                                    .getOptions()));
+    }
+
+    /**
+     * Moves nulls and empties from the dbObj onto the unsetDbObj if corresponding mapper options
+     * are enabled.
+     *
+     * @param dbObj The document for which nulls/empty fields are moved from
+     * @param unsetDbObj The document for which null/empty fields are moved to
+     */
+    private void handleUnsetValues(final DBObject dbObj, final DBObject unsetDbObj) {
+        if (mapper.getOptions().isUnsetNulls() || mapper.getOptions().isUnsetEmpties()) {
+            List<String> unsetKeys = new ArrayList<String>();
+            for (String dbObjKey : dbObj.keySet()) {
+                Object dbObjValue = dbObj.get(dbObjKey);
+                if (mapper.getOptions().isUnsetNulls() && dbObjValue == null) {
+                    unsetKeys.add(dbObjKey);
+                } else if (mapper.getOptions().isUnsetEmpties()) {
+                    if (dbObjValue instanceof Iterable && !((Iterable) dbObjValue).iterator().hasNext()) {
+                        unsetKeys.add(dbObjKey);
+                    } else if (dbObjValue instanceof Map && ((Map) dbObjValue).isEmpty()) {
+                        unsetKeys.add(dbObjKey);
+                    }
+                }
+            }
+            if (!unsetKeys.isEmpty()) {
+                for (String unsetKey : unsetKeys) {
+                    unsetDbObj.put(unsetKey, 1);
+                    dbObj.removeField(unsetKey);
+                }
+            }
+        }
     }
 
     /**
