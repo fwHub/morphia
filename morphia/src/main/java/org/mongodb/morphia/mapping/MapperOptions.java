@@ -268,16 +268,16 @@ public class MapperOptions {
     }
 
     /**
-     * @return true if Morphia should use $unset operator for lists/maps/sets/arrays
+     * @return true if Morphia should use $unset operator for empty lists/maps/sets/arrays
      */
     public boolean isUnsetEmpties() {
         return unsetEmpties;
     }
 
     /**
-     * Controls if Morphia should should use $unset operator for lists/maps/sets/arrays
+     * Controls if Morphia should should use $unset operator for empty lists/maps/sets/arrays
      *
-     * @param unsetEmpties true if Morphia should should use $unset operator for lists/maps/sets/arrays
+     * @param unsetEmpties true if Morphia should should use $unset operator for empty lists/maps/sets/arrays
      */
     public void setUnsetEmpties(final boolean unsetEmpties) {
         this.unsetEmpties = unsetEmpties;

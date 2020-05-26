@@ -1556,8 +1556,8 @@ public class DatastoreImpl implements AdvancedDatastore {
      * Moves nulls and empties from the dbObj onto the unsetDbObj if corresponding mapper options
      * are enabled.
      *
-     * @param dbObj The document for which nulls/empty fields are moved from
-     * @param unsetDbObj The document for which null/empty fields are moved to
+     * @param dbObj The document from which nulls/empty fields are moved
+     * @param unsetDbObj The document where null/empty fields are moved to
      */
     private void handleUnsetValues(final DBObject dbObj, final DBObject unsetDbObj) {
         if (mapper.getOptions().isUnsetNulls() || mapper.getOptions().isUnsetEmpties()) {
