@@ -240,13 +240,15 @@ class ReferenceMapper implements CustomMapper {
             if (!values.isEmpty() || mapper.getOptions().isStoreEmpties()) {
                 dbObject.put(name, values);
             }
+        } else if (mapper.getOptions().isStoreNulls()) {
+            dbObject.put(name, null);
         }
     }
 
     private void writeMap(final MappedField mf, final DBObject dbObject, final String name, final Object fieldValue,
                           final Reference refAnn, final Mapper mapper) {
         final Map<Object, Object> map = (Map<Object, Object>) fieldValue;
-        if ((map != null)) {
+        if (map != null) {
             final Map values = mapper.getOptions().getObjectFactory().createMap(mf);
 
             if (ProxyHelper.isProxy(map) && ProxyHelper.isUnFetched(map)) {
@@ -270,6 +272,8 @@ class ReferenceMapper implements CustomMapper {
             if (!values.isEmpty() || mapper.getOptions().isStoreEmpties()) {
                 dbObject.put(name, values);
             }
+        } else if (mapper.getOptions().isStoreNulls()) {
+            dbObject.put(name, null);
         }
     }
 
