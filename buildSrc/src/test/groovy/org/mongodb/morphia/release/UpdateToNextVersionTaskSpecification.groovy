@@ -19,6 +19,14 @@ class UpdateToNextVersionTaskSpecification extends Specification {
         newVersion == '0.110-SNAPSHOT'
     }
 
+    def 'should parse a string to correctly increment the version number for build metadata'() {
+        when:
+        def newVersion = UpdateToNextVersionTask.incrementToNextVersion('1.3.2+com.cirkus.1')
+        
+        then:
+        newVersion == '1.3.2+com.cirkus.2-SNAPSHOT'
+    }
+
     def 'should parse a string to correctly increment the version number over a boundary'() {
         when:
         def newVersion = UpdateToNextVersionTask.incrementToNextVersion('0.110')

@@ -30,16 +30,16 @@ configure(subprojects - project(':util')) {
 
     uploadArchives {
         project.mavenDeployers << repositories.mavenDeployer {
-            def nexusCredentials = [
-                    userName: project.properties.nexusUsername,
-                    password: project.properties.nexusPassword
+            def artifactoryCredentials = [
+                    userName: project.properties.artifactoryUsername,
+                    password: project.properties.artifactoryPassword
             ]
 
-            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
-                authentication(nexusCredentials)
+            snapshotRepository(url: 'https://artifacts.cirkus.com/libs-snapshot') {
+                authentication(artifactoryCredentials)
             }
-            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                authentication(nexusCredentials)
+            repository(url: 'https://artifacts.cirkus.com/libs-release') {
+                authentication(artifactoryCredentials)
             }
         }
         repositories {
