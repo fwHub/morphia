@@ -858,6 +858,11 @@ public class Mapper {
         if (mf.hasAnnotation(NotSaved.class)) {
             return;
         }
+        
+        // skip null _id fields.
+        if (ID_KEY.equals((mf.getMappedFieldName())) && mf.getFieldValue(entity) == null) {
+            return;
+        }
 
         // get the annotation from the field.
         Class<? extends Annotation> annType = getFieldAnnotation(mf);
