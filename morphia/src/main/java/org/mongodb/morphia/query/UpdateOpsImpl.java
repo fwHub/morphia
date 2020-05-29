@@ -292,11 +292,18 @@ public class UpdateOpsImpl<T> implements UpdateOperations<T> {
         if (convert) {
             if (UpdateOperator.PULL_ALL.equals(op) && value instanceof List) {
                 val = toDBObjList(mf, (List<?>) value);
+                for (Object object : (List<?>) val) {
+                    if (object instanceof DBObject) {
+                        mapper.handleUnsetValues((DBObject) object, new BasicDBObject());
+                    }
+                }
             } else {
                 val = mapper.toMongoObject(mf, null, value);
+                if (val instanceof DBObject) {
+                    mapper.handleUnsetValues((DBObject) val, new BasicDBObject());
+                }
             }
         }
-
 
         if (UpdateOperator.ADD_TO_SET_EACH.equals(op)) {
             val = new BasicDBObject(UpdateOperator.EACH.val(), val);

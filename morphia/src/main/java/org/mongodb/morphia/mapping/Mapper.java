@@ -50,6 +50,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -746,6 +747,56 @@ public class Mapper {
         }
     }
 
+    /**
+     * Moves nulls and empties from the dbObj onto the unsetDbObj if corresponding mapper options
+     * are enabled.
+     * Note that it will remove nulls and empties from the entire object but only return the keys
+     * from the top level fields.
+     *
+     * @param dbObj The document from which nulls/empty fields are moved
+     * @param unsetDbObj The document where null/empty fields are moved to
+     */
+    public void handleUnsetValues(final DBObject dbObj, final DBObject unsetDbObj) {
+        if (!getOptions().isUnsetNulls() && !getOptions().isUnsetEmpties()) {
+            return;
+        }
+
+        List<String> unsetKeys = new ArrayList<String>();
+        for (String dbObjKey : dbObj.keySet()) {
+            Object value = dbObj.get(dbObjKey);
+            if (getOptions().isUnsetNulls() && value == null) {
+                unsetKeys.add(dbObjKey);
+            } else {
+                if (value instanceof Iterable) {
+                    Iterable iterableValue = (Iterable) value;
+                    if (getOptions().isUnsetEmpties() && !iterableValue.iterator().hasNext()) {
+                        unsetKeys.add(dbObjKey);
+                    } else {
+                        for (Iterator iterator = iterableValue.iterator(); iterator.hasNext();) {
+                            Object iterableValueValue = iterator.next();
+                            if (iterableValueValue instanceof DBObject) {
+                                handleUnsetValues((DBObject) iterableValueValue, new BasicDBObject());
+                            }
+                        }
+                    }
+                } else if (value instanceof DBObject) {
+                    handleUnsetValues((DBObject) value, new BasicDBObject());
+                } else if (value instanceof Map) {
+                    Map mapValue = (Map) value;
+                    if (getOptions().isUnsetEmpties() && mapValue.isEmpty()) {
+                        unsetKeys.add(dbObjKey);
+                    }
+                }
+            }
+        }
+        if (!unsetKeys.isEmpty()) {
+            for (String unsetKey : unsetKeys) {
+                unsetDbObj.put(unsetKey, 1);
+                dbObj.removeField(unsetKey);
+            }
+        }
+    }
+
     protected LazyProxyFactory getProxyFactory() {
         return proxyFactory;
     }
@@ -858,7 +909,7 @@ public class Mapper {
         if (mf.hasAnnotation(NotSaved.class)) {
             return;
         }
-        
+
         // skip null _id fields.
         if (ID_KEY.equals((mf.getMappedFieldName())) && mf.getFieldValue(entity) == null) {
             return;
