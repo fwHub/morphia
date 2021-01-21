@@ -112,6 +112,8 @@ class EmbeddedMapper implements CustomMapper {
                 if (!dbObj.keySet().isEmpty() || mapper.getOptions().isStoreEmpties()) {
                     dbObject.put(name, dbObj);
                 }
+            } else if (mapper.getOptions().isStoreNulls()) {
+                dbObject.put(name, null);
             }
         }
     }
@@ -257,6 +259,8 @@ class EmbeddedMapper implements CustomMapper {
             if (!values.isEmpty() || mapper.getOptions().isStoreEmpties()) {
                 dbObject.put(name, values);
             }
+        } else if (mapper.getOptions().isStoreNulls()) {
+            dbObject.put(name, null);
         }
     }
 
@@ -304,6 +308,8 @@ class EmbeddedMapper implements CustomMapper {
             if (!values.isEmpty() || mapper.getOptions().isStoreEmpties()) {
                 dbObject.put(name, values);
             }
+        } else if (mapper.getOptions().isStoreNulls()) {
+            dbObject.put(name, null);
         }
     }
 

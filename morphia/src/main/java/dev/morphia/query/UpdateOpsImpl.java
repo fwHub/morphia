@@ -223,7 +223,19 @@ public class UpdateOpsImpl<T> implements UpdateOperations<T> {
             throw new QueryException("Value for field [" + field + "] cannot be null.");
         }
 
-        add(UpdateOperator.SET, field, value, true);
+        boolean unset = false;
+        if (mapper.getOptions().isUnsetEmpties()) {
+            if (value instanceof Iterable && !((Iterable) value).iterator().hasNext()) {
+                unset = true;
+            } else if (value instanceof Map && ((Map) value).isEmpty()) {
+                unset = true;
+            }
+        }
+        if (unset) {
+            unset(field);
+        } else {
+            add(UpdateOperator.SET, field, value, true);
+        }
         return this;
     }
 
@@ -281,8 +293,16 @@ public class UpdateOpsImpl<T> implements UpdateOperations<T> {
         if (convert) {
             if (UpdateOperator.PULL_ALL.equals(op) && value instanceof List) {
                 val = toDBObjList(mf, (List<?>) value);
+                for (Object object : (List<?>) val) {
+                    if (object instanceof DBObject) {
+                        mapper.handleUnsetValues((DBObject) object, new BasicDBObject());
+                    }
+                }
             } else {
                 val = mapper.toMongoObject(mf, null, value);
+                if (val instanceof DBObject) {
+                    mapper.handleUnsetValues((DBObject) val, new BasicDBObject());
+                }
             }
         }
 

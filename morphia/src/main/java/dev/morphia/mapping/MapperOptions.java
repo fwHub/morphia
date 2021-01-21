@@ -18,6 +18,8 @@ public class MapperOptions {
     private boolean ignoreFinals; //ignore final fields.
     private boolean storeNulls;
     private boolean storeEmpties;
+    private boolean unsetNulls;
+    private boolean unsetEmpties;
     private boolean useLowerCaseCollectionNames;
     private boolean cacheClassLookups;
     private boolean mapSubPackages;
@@ -339,6 +341,38 @@ public class MapperOptions {
     @Deprecated
     public void setStoreNulls(final boolean storeNulls) {
         this.storeNulls = storeNulls;
+    }
+
+    /**
+     * @return true if Morphia should use $unset operator for empty lists/maps/sets/arrays
+     */
+    public boolean isUnsetEmpties() {
+        return unsetEmpties;
+    }
+
+    /**
+     * Controls if Morphia should should use $unset operator for empty lists/maps/sets/arrays
+     *
+     * @param unsetEmpties true if Morphia should should use $unset operator for empty lists/maps/sets/arrays
+     */
+    public void setUnsetEmpties(final boolean unsetEmpties) {
+        this.unsetEmpties = unsetEmpties;
+    }
+
+    /**
+     * @return true if Morphia should use $unset operator for null values
+     */
+    public boolean isUnsetNulls() {
+        return unsetNulls;
+    }
+
+    /**
+     * Controls if Morphia should use $unset operator for null values.
+     *
+     * @param unsetNulls true if Morphia should use $unset operator for null values
+     */
+    public void setUnsetNulls(final boolean unsetNulls) {
+        this.unsetNulls = unsetNulls;
     }
 
     /**

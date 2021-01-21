@@ -256,6 +256,8 @@ class ReferenceMapper implements CustomMapper {
             if (!values.isEmpty() || mapper.getOptions().isStoreEmpties()) {
                 dbObject.put(name, values);
             }
+        } else if (mapper.getOptions().isStoreNulls()) {
+            dbObject.put(name, null);
         }
     }
 
@@ -286,6 +288,8 @@ class ReferenceMapper implements CustomMapper {
             if (!values.isEmpty() || mapper.getOptions().isStoreEmpties()) {
                 dbObject.put(name, values);
             }
+        } else if (mapper.getOptions().isStoreNulls()) {
+            dbObject.put(name, null);
         }
     }
 

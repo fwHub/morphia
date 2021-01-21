@@ -698,6 +698,12 @@ public class DatastoreImpl implements AdvancedDatastore {
 
         if (wr == null) {
             final Query<T> query = (Query<T>) createQuery(unwrapped.getClass()).filter("_id", id);
+            BasicDBObject unsetObj = new BasicDBObject();
+            mapper.handleUnsetValues(dbObj, unsetObj);
+
+            if (!unsetObj.isEmpty()) {
+            	set.put("$unset", unsetObj);
+            }
             wr = update(query, set, new UpdateOptions().writeConcern(wc)).getWriteResult();
         }
 
@@ -1266,6 +1272,7 @@ public class DatastoreImpl implements AdvancedDatastore {
         // involvedObjects is used not only as a cache but also as a list of what needs to be called for life-cycle methods at the end.
         final LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
         final DBObject document = entityToDBObj(entity, involvedObjects);
+        mapper.handleUnsetValues(document, new BasicDBObject());
 
         // try to do an update if there is a @Version field
         final Object idValue = document.get("_id");
