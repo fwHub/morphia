@@ -5,7 +5,7 @@
     <parent>
         <groupId>dev.morphia.morphia</groupId>
         <artifactId>morphia-parent</artifactId>
-        <version>1.5.9-SNAPSHOT</version>
+        <version>1.5.8+com.cirkus.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -88,18 +88,6 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>${driver.version}</version>
         </dependency>
-<!--
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-legacy</artifactId>
-            <version>4.0.0</version>
-        </dependency>
--->
         <dependency>
             <groupId>com.thoughtworks.proxytoys</groupId>
             <artifactId>proxytoys</artifactId>
