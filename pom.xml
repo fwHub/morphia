@@ -36,12 +36,20 @@
                         <compilerArgument>-proc:none</compilerArgument>
                     </configuration>
                 </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surefire.version}</version>
+					<configuration>
+						<skipTests>true</skipTests>
+					</configuration>
+				</plugin>                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-report-plugin</artifactId>
                     <version>${surefire.version}</version>
                     <configuration>
-                        <alwaysGenerateSurefireReport>true</alwaysGenerateSurefireReport>
+                        <alwaysGenerateSurefireReport>false</alwaysGenerateSurefireReport>
                     </configuration>
                 </plugin>
             </plugins>
@@ -73,7 +81,7 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${surefire.version}</version>
                 <configuration>
-                    <alwaysGenerateSurefireReport>true</alwaysGenerateSurefireReport>
+                    <alwaysGenerateSurefireReport>false</alwaysGenerateSurefireReport>
                 </configuration>
                 <executions>
                     <execution>
