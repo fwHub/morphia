@@ -45,24 +45,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.antwerkz.github</groupId>
-                <artifactId>issues-maven-plugin</artifactId>
-                <version>1.0.3</version>
-                <executions>
-                    <execution>
-                        <id>issues</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <phase>deploy</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>MorphiaOrg/morphia</repository>
-                    <javadocUrl>https://morphia.dev/1.5.8/javadoc/</javadocUrl>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>build-plugins</artifactId>
                 <version>${project.version}</version>
