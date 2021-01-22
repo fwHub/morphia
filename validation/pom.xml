@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>dev.morphia.morphia</groupId>
+        <groupId>com.github.fwHub.morphia</groupId>
         <artifactId>morphia-parent</artifactId>
         <version>1.5.8+com.cirkus.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -18,7 +18,7 @@
             <version>4.2.2</version>
         </dependency>
         <dependency>
-            <groupId>dev.morphia.morphia</groupId>
+            <groupId>com.github.fwHub.morphia</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
