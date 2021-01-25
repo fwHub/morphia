@@ -21,7 +21,7 @@
 			</activation>
 			<distributionManagement>
 				<repository>
-					<id>central-dev</id>
+					<id>central</id>
 					<url>https://artifacts.cirkus.com/libs-snapshot</url>
 			 	</repository>
 			</distributionManagement>
