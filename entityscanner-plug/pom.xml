@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.fwHub.morphia</groupId>
         <artifactId>morphia-parent</artifactId>
-        <version>1.5.8+com.cirkus.1</version>
+        <version>1.5.8+com.cirkus.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

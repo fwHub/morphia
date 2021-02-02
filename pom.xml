@@ -3,7 +3,7 @@
 
     <groupId>com.github.fwHub.morphia</groupId>
     <artifactId>morphia-parent</artifactId>
-    <version>1.5.8+com.cirkus.1</version>
+    <version>1.5.8+com.cirkus.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Morphia</name>
@@ -50,7 +50,7 @@
 		<connection>scm:git:git@github.com:fwHub/morphia.git</connection>
 		<developerConnection>scm:git:git@github.com:fwHub/morphia.git</developerConnection>
 		<url>https://github.com/fwHub/morphia</url>
-	  <tag>r1.5.8+com.cirkus.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 
     <properties>
